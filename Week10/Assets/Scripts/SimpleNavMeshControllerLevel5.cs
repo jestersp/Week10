@@ -4,14 +4,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;   
 
-public class SimpleNavMeshController : MonoBehaviour
+public class SimpleNavMeshControllerLevel5 : MonoBehaviour
 {
     [SerializeField] public NavMeshAgent _agent;
     [SerializeField] public Camera _camera;
+    [SerializeField] public ThirdPersonCharacter character;
     // Start is called before the first frame update
     void Start()
     {           
         _camera = Camera.main;
+        _agent.updateRotation = false;
     }
 
     // Update is called once per frame
@@ -24,6 +26,14 @@ public class SimpleNavMeshController : MonoBehaviour
             {
                 _agent.SetDestination(hit.point);
             }
+        }
+        if (_agent.remainingDistance > _agent.stoppingDistance)
+        {
+            character.Move(_agent.desiredVelocity, false, false);
+        }
+        else
+        {
+            character.Move(Vector3.zero, false, false);  
         }
     }
 }
